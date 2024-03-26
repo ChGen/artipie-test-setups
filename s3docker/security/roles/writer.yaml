@@ -1,0 +1,9 @@
+permissions:
+  adapter_basic_permissions:
+    "*":
+      - write
+  docker_repository_permissions:
+    "*":
+      "*":
+        - push
+

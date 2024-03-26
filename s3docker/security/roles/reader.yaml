@@ -1,0 +1,9 @@
+permissions:
+  adapter_basic_permissions:
+    "*":
+      - read
+  docker_repository_permissions:
+    "*":
+      "*":
+        - pull
+

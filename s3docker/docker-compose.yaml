@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ACCESS_KEY: minio123
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - ./minio-data/:/mnt/data
+    command:
+      server /mnt/data/ --address :9000
+  minio-client-init:
+    image: minio/mc
+    depends_on:
+      - minio
+    entrypoint: /bin/bash -c "
+      mc alias set myminio http://minio:9000 minio123 minio123;
+      mc mb --region us-east-1 myminio/repo-test;
+      mc anonymous set public myminio/repo-test;
+      mc ls myminio/repo-test
+      exit 0;"
+
+  artipie:
+    image: artipie/artipie-ubuntu:v0.30.14
+    container_name: artipie
+    depends_on:
+      - minio
+    restart: unless-stopped
+    environment:
+      - ARTIPIE_USER_NAME=artipie
+      - ARTIPIE_USER_PASS=artipie
+      - AWS_ACCESS_KEY_ID=minio123
+      - AWS_SECRET_ACCESS_KEY=minio123
+    ports:
+      - "8080:8080"
+      - "8086:8086"
+    volumes:
+      - ./repo:/var/artipie/repo
+      - ./security:/var/artipie/security
+      - ./artipie.yml:/etc/artipie/artipie.yml
+
+  front:
+    image: artipie/front:latest
+    container_name: front
+    restart: unless-stopped
+    environment:
+      - ARTIPIE_REST=http://artipie:8086
+    ports:
+      - "8088:8080"

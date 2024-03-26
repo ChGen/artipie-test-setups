@@ -1,0 +1,6 @@
+repo:
+  type: docker
+  storage:
+    type: fs
+    path: /var/artipie/data
+  layout: flat
