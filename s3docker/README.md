@@ -2,9 +2,7 @@
 
 ### Server
 ```
-docker compose up
-...
-docker-compose rm -fv
+./reset-server.sh
 ```
 
 ### Client
@@ -12,6 +10,6 @@ docker-compose rm -fv
 Run test scripts, from simple to hard:
 ```
 ./ub_fs_test.sh
-./ub_test.sh
+./ub_s3_test.sh
 ./huge_test.sh
 ```
