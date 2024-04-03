@@ -1,0 +1,11 @@
+repo:
+  type: deb
+  storage:
+    type: s3
+    bucket: repo-test
+    region: us-east-1
+    endpoint: http://minio:9000
+  settings:
+    Components: main
+    Architectures: amd64 arm64
+

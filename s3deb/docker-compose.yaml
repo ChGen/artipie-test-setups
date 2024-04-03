@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio123
+      MINIO_SECRET_KEY: minio123
+    volumes:
+      - ./minio-data/:/mnt/data
+    command:
+      server /mnt/data/ --address :9000
+  
+  artipie:
+    image: artipie/artipie-ubuntu:1.0-SNAPSHOT
+    container_name: artipie
+    restart: unless-stopped
+    environment:
+      - ARTIPIE_USER_NAME=artipie
+      - ARTIPIE_USER_PASS=artipie
+      - AWS_ACCESS_KEY_ID=minio123
+      - AWS_SECRET_ACCESS_KEY=minio123
+    ports:
+      - "8080:8080"
+      - "8086:8086"
+    volumes:
+      - ./repo:/var/artipie/repo
+      - ./security:/var/artipie/security
+      - ./artipie.yml:/etc/artipie/artipie.yml
