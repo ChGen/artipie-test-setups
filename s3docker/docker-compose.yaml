@@ -36,8 +36,10 @@ services:
     ports:
       - "8080:8080"
       - "8086:8086"
+    user: 0:0
     volumes:
       - ./repo:/var/artipie/repo
+      - ./data:/var/artipie/data
       - ./security:/var/artipie/security
       - ./artipie.yml:/etc/artipie/artipie.yml
 
