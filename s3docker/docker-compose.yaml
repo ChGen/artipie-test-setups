@@ -23,7 +23,7 @@ services:
       exit 0;"
 
   artipie:
-    image: artipie/artipie-ubuntu:v0.30.14
+    image: artipie/artipie-ubuntu:latest
     container_name: artipie
     depends_on:
       - minio
