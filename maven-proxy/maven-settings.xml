@@ -1,0 +1,17 @@
+<settings>
+  <profiles>
+    <profile>
+      <id>artipie</id>
+      <repositories>
+        <repository>
+          <id>my-maven</id>
+          <url>http://localhost:8085/my-maven/</url>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+  <activeProfiles>
+    <activeProfile>artipie</activeProfile>
+  </activeProfiles>
+</settings>
+
