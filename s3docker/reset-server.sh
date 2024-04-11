@@ -5,5 +5,4 @@ docker-compose down
 rm -rf ./minio-data ./data || sudo rm -rf ./minio-data ./data
 docker-compose rm -fv
 mkdir -p ./data
-docker-compose up -d
-
+docker-compose up -d --remove-orphans

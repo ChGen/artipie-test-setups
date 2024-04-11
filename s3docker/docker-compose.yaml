@@ -1,5 +1,5 @@
-version: '3.8'
-
+version: '3'
+ 
 services:
   minio:
     image: minio/minio:latest
@@ -9,24 +9,32 @@ services:
       MINIO_SECRET_KEY: minio123
     volumes:
       - ./minio-data/:/mnt/data
+    ports:
+      - "9000:9000" # curl -v http://localhost:9000/repo-test
     command:
       server /mnt/data/ --address :9000
-  minio-client-init:
+    healthcheck:
+        test: mc alias set myminio http://minio:9000 minio123 minio123
+        interval: 10s
+        timeout: 5s
+        retries: 3
+  minio-init:
     image: minio/mc
     depends_on:
-      - minio
-    entrypoint: /bin/bash -c "
+      minio:
+        condition: service_healthy
+    entrypoint: /bin/bash -ce "
       mc alias set myminio http://minio:9000 minio123 minio123;
       mc mb --region us-east-1 myminio/repo-test;
       mc anonymous set public myminio/repo-test;
       mc ls myminio/repo-test
       exit 0;"
-
   artipie:
-    image: artipie/artipie-ubuntu:latest
+    image: artipie/artipie:latest
     container_name: artipie
     depends_on:
-      - minio
+      minio-init:
+        condition: service_completed_successfully
     restart: unless-stopped
     environment:
       - ARTIPIE_USER_NAME=artipie
