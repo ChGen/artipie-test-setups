@@ -1,0 +1,7 @@
+type: plain
+pass: qwerty
+email: artipie@example.com
+roles:
+  - api-admin
+  - reader
+  - writer

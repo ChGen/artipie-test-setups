@@ -1,0 +1,11 @@
+meta:
+  storage:
+    type: fs
+    path: /var/artipie/repo
+  credentials:
+    - type: artipie
+  policy:
+    type: artipie
+    storage:
+      type: fs
+      path: /var/artipie/security
